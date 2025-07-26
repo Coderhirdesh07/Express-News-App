@@ -17,8 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class NewsViewModel @Inject constructor(val newsApiRepository: NewsApiRepository) : ViewModel(){
     // state handles code
-    private val _newsData = MutableStateFlow<NewsApiData?>(null)
-    val newsData: StateFlow<NewsApiData?> = _newsData.asStateFlow()
+    private var _newsData = MutableStateFlow<NewsApiData?>(null)
+    var newsData: StateFlow<NewsApiData?> = _newsData.asStateFlow()
 
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error.asStateFlow()
@@ -56,8 +56,8 @@ class NewsViewModel @Inject constructor(val newsApiRepository: NewsApiRepository
 
     // for database
 
-    private val _localNewsList  = MutableStateFlow<List<ArticleDTO?>?>(emptyList())
-    val localNewsList: StateFlow<List<ArticleDTO?>?> = _localNewsList.asStateFlow()
+    private var _localNewsList  = MutableStateFlow<List<ArticleDTO?>?>(emptyList())
+    var localNewsList: StateFlow<List<ArticleDTO?>?> = _localNewsList.asStateFlow()
 
 
     private val _databaseError = MutableStateFlow<String?>(null)

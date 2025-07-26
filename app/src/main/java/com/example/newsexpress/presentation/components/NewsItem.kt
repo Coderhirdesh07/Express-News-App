@@ -1,8 +1,6 @@
-package com.example.newsexpress.presentation.Components
+package com.example.newsexpress.presentation.components
 
 
-import android.graphics.Color
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,18 +23,18 @@ import com.example.newsexpress.newsapidata.Article
 @Composable
 fun NewsItem(itemList:List<Article>){
     LazyColumn {
-            items(itemList){
-                Box(modifier= Modifier.fillMaxWidth().fillMaxHeight(0.25f)){
-                    Row{
-                        AsyncImage(model=it.urtToImage, contentDescription = "Image from url", modifier = Modifier.fillMaxWidth())
-                        Column(verticalArrangement = Arrangement.SpaceEvenly, horizontalAlignment = Alignment.Start){
-                            Text(text = it.title, fontSize = 25.sp, fontWeight = FontWeight.Bold)
-                            Spacer(modifier = Modifier.fillMaxWidth().fillMaxHeight(0.2f))
-                            Text(text = it.description, fontSize = 14.sp)
-                        }
+        items(itemList){
+            Box(modifier= Modifier.fillMaxWidth().fillMaxHeight(0.25f)){
+                Row{
+                    AsyncImage(model=it.urtToImage, contentDescription = "Image from url", modifier = Modifier.fillMaxWidth())
+                      Column(verticalArrangement = Arrangement.SpaceEvenly, horizontalAlignment = Alignment.Start){
+                          Text(text = it.title, fontSize = 25.sp, fontWeight = FontWeight.Bold)
+                          Spacer(modifier = Modifier.fillMaxWidth().fillMaxHeight(0.2f))
+                          Text(text = it.description, fontSize = 14.sp)
+                      }
 
-                    }
                 }
             }
+        }
     }
 }

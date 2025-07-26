@@ -16,6 +16,4 @@ interface NewsApiService {
     @Headers("api-key:" + "6fa37c2d9a784fb58ff0cf1a80f044e3")
     @GET("/top-headlines")
     suspend fun getNewsHeadlines(): Resource<NewsApiData>
-
-
 }
