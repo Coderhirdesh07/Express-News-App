@@ -30,8 +30,21 @@ class NewsApiRepositoryImpl(private val newsApiService: NewsApiService,private v
         catch (e:Exception){
             emit(Resource.Error(e.message.toString(),null))
         }
-
-
+    }
+    override fun getNewsArticleCategory(category: String): Flow<Resource<NewsApiData>> = flow {
+        try{
+            emit(Resource.Loading(true))
+            val data = newsApiService.getNewsArticleWithCategory(category).data
+            if(data!=null){
+                emit(Resource.Success(data))
+            }
+            else{
+                emit(Resource.Error(message="Data Cannot be fetched",data = null))
+            }
+        }
+        catch (e: Exception){
+            emit(Resource.Error(message = e.message.toString(), data = null))
+        }
     }
 
     override fun getNewsTopHeadLines(): Flow<Resource<NewsApiData>> = flow {
@@ -53,7 +66,8 @@ class NewsApiRepositoryImpl(private val newsApiService: NewsApiService,private v
     }
 
 
- // for room database
+
+    // for room database
 
     override  fun getSavedNewsArticle(): Flow<Resource<List<ArticleDTO>>> = flow{
         try {

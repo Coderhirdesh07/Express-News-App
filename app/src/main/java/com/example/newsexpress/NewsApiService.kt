@@ -14,6 +14,10 @@ interface NewsApiService {
     suspend fun  getNewsArticle(@Query("q") q:String): Resource<NewsApiData>
 
     @Headers("api-key:" + "6fa37c2d9a784fb58ff0cf1a80f044e3")
+    @GET("/everything")
+    suspend fun  getNewsArticleWithCategory(@Query("category") category:String): Resource<NewsApiData>
+
+    @Headers("api-key:" + "6fa37c2d9a784fb58ff0cf1a80f044e3")
     @GET("/top-headlines")
     suspend fun getNewsHeadlines(): Resource<NewsApiData>
 }

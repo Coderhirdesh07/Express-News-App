@@ -76,7 +76,7 @@ dependencies {
     implementation(libs.coil3.coil.compose)
     ksp(libs.hilt.android.compiler)
     ksp(libs.hilt.compiler)
-// For collecting flows in lifecycle-aware components (like ViewModel)
+ // For collecting flows in lifecycle-aware components (like ViewModel)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     // Compose Runtime (usually already included)
     implementation(libs.androidx.runtime)
@@ -95,6 +95,7 @@ dependencies {
     implementation(libs.androidx.paging.runtime)
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.navigation.compose)
+    
 
 
 

@@ -40,7 +40,6 @@ class NewsViewModel @Inject constructor(val newsApiRepository: NewsApiRepository
 
     }
 
-
     fun getNewsHeadlines(){
         viewModelScope.launch{
             newsApiRepository.getNewsTopHeadLines()
@@ -51,6 +50,18 @@ class NewsViewModel @Inject constructor(val newsApiRepository: NewsApiRepository
                 }
         }
 
+    }
+
+    fun getNewsArticleWithCategory(category:String){
+        viewModelScope.launch {
+            newsApiRepository.getNewsArticleCategory(category)
+                .catch { e->
+                    _error.value = e.message?:"Data Not Fetched"
+                }
+                .collect { news->
+                    _newsData.value = news.data
+                }
+        }
     }
 
 

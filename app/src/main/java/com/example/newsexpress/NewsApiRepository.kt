@@ -10,6 +10,8 @@ interface NewsApiRepository {
 
     fun getNewsTopHeadLines(): Flow<Resource<NewsApiData>>
 
+    fun getNewsArticleCategory(category:String) :Flow<Resource<NewsApiData>>
+
 
     // for database
     fun getSavedNewsArticle():Flow<Resource<List<ArticleDTO>>>

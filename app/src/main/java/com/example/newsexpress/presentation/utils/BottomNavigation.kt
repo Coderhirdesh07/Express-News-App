@@ -22,9 +22,13 @@ import androidx.navigation.NavHost
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.newsexpress.presentation.screens.HomeScreen
+import com.example.newsexpress.presentation.screens.SavedArticleScreen
+import com.example.newsexpress.presentation.screens.SearchScreen
+import com.example.newsexpress.viewmodel.NewsViewModel
 
 @Composable
-fun BottomNavigationBar(){
+fun BottomNavigation(viewModel: NewsViewModel){
     val navigationController = rememberNavController()
     val context = LocalContext.current.applicationContext
     val selectedScreen = remember(){
@@ -59,9 +63,9 @@ fun BottomNavigationBar(){
     { paddingValues ->
 
         NavHost(navController = navigationController, startDestination = Screens.HomeScreen, modifier = Modifier.padding(paddingValues)){
-            composable(Screens.HomeScreen.screen){}
-            composable(Screens.SearchScreen.screen){}
-            composable(Screens.SavedArticleScreen.screen){}
+            composable(Screens.HomeScreen.screen){ HomeScreen(viewModel) }
+            composable(Screens.SearchScreen.screen){ SearchScreen(viewModel) }
+            composable(Screens.SavedArticleScreen.screen){ SavedArticleScreen(viewModel) }
         }
     }
 

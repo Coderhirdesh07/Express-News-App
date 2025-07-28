@@ -31,19 +31,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import com.example.newsexpress.R
+import com.example.newsexpress.viewmodel.NewsViewModel
 
 @Composable
-fun CategorieSection(){
+fun Categories(newsViewModel: NewsViewModel){
     val categoryList:List<CategoryItem> = getCategoryList()
-    CategoryCard(categoryList)
+    CategoryCard(categoryList,newsViewModel)
 }
 
 
 @Composable
-fun CategoryCard(categoryList:List<CategoryItem>){
+fun CategoryCard(categoryList:List<CategoryItem>,newsViewModel: NewsViewModel){
     LazyRow {
         items(categoryList){ it->
-            Card(modifier = Modifier.width(150.dp).height(height = 120.dp),
+            Card(modifier = Modifier.width(150.dp).height(height = 120.dp).clickable {
+                newsViewModel.getNewsArticleWithCategory(it.categoryName)
+            },
                 shape = RoundedCornerShape(10.dp),
                 colors = CardDefaults.cardColors(containerColor = it.categoryColor),
                 elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)){
