@@ -36,7 +36,7 @@ fun NewsItem(itemList:List<Article>){
         items(itemList){
             Box(modifier= Modifier.fillMaxWidth().padding(8.dp)){
                 Row(modifier = Modifier.fillMaxWidth()){
-                    AsyncImage(model=it.urtToImage, contentDescription = "Image from url",
+                    AsyncImage(model=it.urlToImage, contentDescription = "Image from url",
                         modifier = Modifier.size(100.dp).clip(RoundedCornerShape(8.dp)), contentScale = ContentScale.Crop)
                       Spacer(modifier = Modifier.fillMaxWidth().fillMaxHeight(0.2f))
                       Column(modifier = Modifier.fillMaxWidth().align(Alignment.CenterVertically)

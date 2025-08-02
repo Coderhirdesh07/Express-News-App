@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -9,7 +11,7 @@ plugins {
 
 android {
     namespace = "com.example.newsexpress"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.newsexpress"
@@ -34,13 +36,18 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
+
     buildFeatures {
         compose = true
     }
 
+
+}
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_11)
+        freeCompilerArgs.addAll("-Xcontext-receivers")
+    }
 }
 
 dependencies {
@@ -86,18 +93,25 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.paging.runtime)
-
     implementation(libs.androidx.lifecycle.viewmodel.savedstate)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation (libs.androidx.hilt.navigation.compose)
-
     implementation(libs.androidx.paging.runtime)
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.navigation.compose)
+
+    testImplementation(libs.mockk)
+// latest version at time of writing
+
+
+        // Unit test
+
+        testImplementation (libs.mockito.core)
+        androidTestImplementation (libs.mockito.android)
+        testImplementation(libs.mockwebserver)
+        testImplementation(libs.kotlinx.coroutines.test)
     
-
-
 
 
 }

@@ -9,6 +9,7 @@ import com.example.newsexpress.Resource
 import com.example.newsexpress.newsapidata.NewsApiData
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,19 +17,17 @@ import javax.inject.Inject
 class NewsApiRepositoryImpl(private val newsApiService: NewsApiService,private val newsDao: NewsDao): NewsApiRepository{
 
     override fun getNewsArticle(q: String): Flow<Resource<NewsApiData>> = flow {
-        try{
+        try {
             emit(Resource.Loading(true))
             val data = newsApiService.getNewsArticle(q).data
             if (data != null) {
                 emit(Resource.Success(data))
+            } else {
+                emit(Resource.Error(message = "Error found", data = null))
             }
-            else{
-                emit(Resource.Error(message = "Data cannot be fetched",null))
-            }
-
         }
-        catch (e:Exception){
-            emit(Resource.Error(e.message.toString(),null))
+        catch (e: Exception){
+            emit(value = Resource.Error(message = e.message.toString(),data=null))
         }
     }
     override fun getNewsArticleCategory(category: String): Flow<Resource<NewsApiData>> = flow {
@@ -57,8 +56,6 @@ class NewsApiRepositoryImpl(private val newsApiService: NewsApiService,private v
             else{
                 emit(Resource.Error(message = "Data Cannot Be fetched",null))
             }
-
-
         }
         catch (e: Exception){
             emit(Resource.Error(message = "Data Cannot be fetched",null))

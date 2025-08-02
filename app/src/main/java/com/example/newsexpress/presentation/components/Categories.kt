@@ -71,8 +71,8 @@ fun getCategoryList():List<CategoryItem>{
     return listOf<CategoryItem>(
         CategoryItem("General",R.drawable.ic_launcher_foreground,Color.Green),
         CategoryItem("Science",R.drawable.ic_launcher_foreground,Color.Cyan),
-        CategoryItem("Health",R.drawable.ic_launcher_foreground,Color.Blue),
-        CategoryItem("Sports",R.drawable.ic_launcher_foreground,Color.Gray),
+        CategoryItem("Health",R.drawable.healthcare,Color.Blue),
+        CategoryItem("Sports",R.drawable.football,Color.Gray),
         CategoryItem("Business",R.drawable.ic_launcher_foreground,Color.Magenta)
     )
 }
