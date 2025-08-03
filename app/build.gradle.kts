@@ -103,7 +103,7 @@ dependencies {
 
     testImplementation(libs.mockk)
 // latest version at time of writing
-
+    implementation(libs.androidx.datastore.preference)
 
         // Unit test
 

@@ -16,10 +16,10 @@ import javax.inject.Inject
 
 class NewsApiRepositoryImpl(private val newsApiService: NewsApiService,private val newsDao: NewsDao): NewsApiRepository{
 
-    override fun getNewsArticle(q: String): Flow<Resource<NewsApiData>> = flow {
+    override fun getNewsArticle(q: String,language:String): Flow<Resource<NewsApiData>> = flow {
         try {
             emit(Resource.Loading(true))
-            val data = newsApiService.getNewsArticle(q).data
+            val data = newsApiService.getNewsArticle(q, language).data
             if (data != null) {
                 emit(Resource.Success(data))
             } else {
@@ -30,10 +30,10 @@ class NewsApiRepositoryImpl(private val newsApiService: NewsApiService,private v
             emit(value = Resource.Error(message = e.message.toString(),data=null))
         }
     }
-    override fun getNewsArticleCategory(category: String): Flow<Resource<NewsApiData>> = flow {
+    override fun getNewsArticleCategory(category: String,language:String): Flow<Resource<NewsApiData>> = flow {
         try{
             emit(Resource.Loading(true))
-            val data = newsApiService.getNewsArticleWithCategory(category).data
+            val data = newsApiService.getNewsArticleWithCategory(category,language).data
             if(data!=null){
                 emit(Resource.Success(data))
             }
@@ -46,10 +46,10 @@ class NewsApiRepositoryImpl(private val newsApiService: NewsApiService,private v
         }
     }
 
-    override fun getNewsTopHeadLines(): Flow<Resource<NewsApiData>> = flow {
+    override fun getNewsTopHeadLines(country:String): Flow<Resource<NewsApiData>> = flow {
         try {
             emit(Resource.Loading(true))
-            val data = newsApiService.getNewsHeadlines().data
+            val data = newsApiService.getNewsHeadlines(country).data
             if(data!=null){
                 emit(Resource.Success(data))
             }

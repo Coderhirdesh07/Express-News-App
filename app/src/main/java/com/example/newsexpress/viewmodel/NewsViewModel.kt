@@ -22,15 +22,16 @@ class NewsViewModel @Inject constructor(val newsApiRepository: NewsApiRepository
 
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error.asStateFlow()
+    val country:String="us"
 
 
     init{
-       getNewsHeadlines()
+       getNewsHeadlines(country)
     }
 
-    fun getNewsArticleFromNetwork(query:String){
+    fun getNewsArticleFromNetwork(query:String,language:String){
         viewModelScope.launch {
-            newsApiRepository.getNewsArticle(query)
+            newsApiRepository.getNewsArticle(query,language)
                 .catch {e->
                     _error.value = e.message?:"Unknown Error"
                 }.collect { news ->
@@ -40,9 +41,9 @@ class NewsViewModel @Inject constructor(val newsApiRepository: NewsApiRepository
 
     }
 
-    fun getNewsHeadlines(){
+    fun getNewsHeadlines(country:String){
         viewModelScope.launch{
-            newsApiRepository.getNewsTopHeadLines()
+            newsApiRepository.getNewsTopHeadLines(country)
                 .catch { e->
                     _error.value = e.message?:"Unknown Error"
                 }.collect { news->
@@ -52,9 +53,9 @@ class NewsViewModel @Inject constructor(val newsApiRepository: NewsApiRepository
 
     }
 
-    fun getNewsArticleWithCategory(category:String){
+    fun getNewsArticleWithCategory(category:String,language: String){
         viewModelScope.launch {
-            newsApiRepository.getNewsArticleCategory(category)
+            newsApiRepository.getNewsArticleCategory(category, language)
                 .catch { e->
                     _error.value = e.message?:"Data Not Fetched"
                 }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
@@ -23,6 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.newsexpress.presentation.screens.HomeScreen
+import com.example.newsexpress.presentation.screens.ProfileScreen
 import com.example.newsexpress.presentation.screens.SavedArticleScreen
 import com.example.newsexpress.presentation.screens.SearchScreen
 import com.example.newsexpress.viewmodel.NewsViewModel
@@ -57,6 +59,15 @@ fun BottomNavigation(viewModel: NewsViewModel){
                 }, modifier = Modifier.weight(1f)){
                     Icon(Icons.Default.Favorite, contentDescription = "Saved Icons", modifier = Modifier.size(26.dp))
                 }
+
+                IconButton(onClick = {
+                    selectedScreen.value = Icons.Default.Person
+                    navigationController.navigate(Screens.SavedArticleScreen){ popUpTo(0) }
+                }, modifier = Modifier.weight(1f)){
+                    Icon(Icons.Default.Person, contentDescription = "Profile Icons", modifier = Modifier.size(26.dp))
+                }
+
+
             }
         }
     )
@@ -66,6 +77,7 @@ fun BottomNavigation(viewModel: NewsViewModel){
             composable(Screens.HomeScreen.screen){ HomeScreen(viewModel) }
             composable(Screens.SearchScreen.screen){ SearchScreen(viewModel) }
             composable(Screens.SavedArticleScreen.screen){ SavedArticleScreen(viewModel) }
+            composable ( Screens.ProfileScreen.screen ){ ProfileScreen(context) }
         }
     }
 
@@ -74,4 +86,6 @@ sealed class Screens(val screen:String){
     data object HomeScreen: Screens("home")
     data object SavedArticleScreen: Screens("saved")
     data object SearchScreen:Screens("search")
+
+    data object ProfileScreen:Screens("profile")
 }

@@ -6,11 +6,11 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 interface NewsApiRepository {
-    fun getNewsArticle(q:String): Flow<Resource<NewsApiData>>
+    fun getNewsArticle(q:String,language:String): Flow<Resource<NewsApiData>>
 
-    fun getNewsTopHeadLines(): Flow<Resource<NewsApiData>>
+    fun getNewsTopHeadLines(country:String): Flow<Resource<NewsApiData>>
 
-    fun getNewsArticleCategory(category:String) :Flow<Resource<NewsApiData>>
+    fun getNewsArticleCategory(category:String,language: String) :Flow<Resource<NewsApiData>>
 
 
     // for database
