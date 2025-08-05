@@ -1,6 +1,5 @@
 package com.example.newsexpress.presentation.screens
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,47 +13,49 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.newsexpress.datastore.PreferenceUtils
 import com.example.newsexpress.presentation.components.DropDownMenuSelector
 import com.example.newsexpress.presentation.components.LanguageList
 import com.example.newsexpress.presentation.components.RegionalList
+import com.example.newsexpress.viewmodel.NewsViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun ProfileScreen(context: Context){
-    val regionList = remember {  RegionalList() }
+fun ProfileScreen(newsViewModel: NewsViewModel) {
+    val regionList = remember { RegionalList() }
     val languageList = remember { LanguageList() }
-    val preferenceUtils = remember { PreferenceUtils(context) }
+
     val coroutineScope = rememberCoroutineScope()
 
     var selectedRegion by remember { mutableStateOf<String>("us") }
     var language by remember { mutableStateOf<String>("en") }
 
-        Column(modifier = Modifier.fillMaxSize().padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)){
-            DropDownMenuSelector(
-                regionList,
-                selectedRegion,
-                onItemSelected = {selectedRegion = it
-                    coroutineScope.launch {
-                        preferenceUtils.saveString("selected_region",it)
-                    }
+    Column(
+        modifier = Modifier.fillMaxSize().padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        DropDownMenuSelector(
+            regionList,
+            selectedRegion,
+            onItemSelected = {
+                selectedRegion = it
+                coroutineScope.launch {
+                    newsViewModel.saveDataStoreInfoRegion(it)
                 }
-            )
-            DropDownMenuSelector(
-                languageList,
-                language,
-                onItemSelected = {
-                    language = it
-                    coroutineScope.launch {
-                        preferenceUtils.saveString("selected_language",it)
-                    }
-                })
-        }
+            },
+        )
+        DropDownMenuSelector(
+            languageList,
+            language,
+            onItemSelected = {
+                language = it
+                coroutineScope.launch {
+                    newsViewModel.saveDataStoreInfoLanguage(it)
+                }
+            },
+        )
+    }
     LaunchedEffect(Unit) {
-        coroutineScope.launch {
-            selectedRegion = preferenceUtils.getString("selected_region") ?: "us"
-            language = preferenceUtils.getString("selected_language") ?: "en"
-        }
+        selectedRegion = newsViewModel.region
+        language = newsViewModel.language
     }
 }

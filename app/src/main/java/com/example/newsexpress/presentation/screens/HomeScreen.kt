@@ -11,9 +11,9 @@ import com.example.newsexpress.presentation.components.NewsItem
 import com.example.newsexpress.viewmodel.NewsViewModel
 
 @Composable
-fun HomeScreen(newsViewModel: NewsViewModel){
+fun HomeScreen(newsViewModel: NewsViewModel) {
     val newsListState by newsViewModel.newsData.collectAsState()
-    val newsListData = newsListState?.article?:emptyList()
+    val newsListData = newsListState?.article ?: emptyList()
 
     Categories(newsViewModel)
     Text("News", fontSize = 15.sp, fontWeight = FontWeight.Bold)

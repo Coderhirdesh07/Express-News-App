@@ -1,12 +1,13 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
-
+    id("org.jlleitschuh.gradle.ktlint") version "13.0.0"
 }
 
 android {
@@ -22,13 +23,12 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -40,13 +40,19 @@ android {
     buildFeatures {
         compose = true
     }
-
-
 }
 kotlin {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_11)
         freeCompilerArgs.addAll("-Xcontext-receivers")
+    }
+}
+ktlint {
+    android.set(true)
+    ignoreFailures.set(false)
+    reporters {
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.SARIF)
     }
 }
 
@@ -69,7 +75,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.runtime.livedata)
     testImplementation(libs.junit)
-    implementation (libs.coil.compose)
+    implementation(libs.coil.compose)
     testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -77,26 +83,26 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation (libs.retrofit)
+    implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.coil3.coil.compose)
     ksp(libs.hilt.android.compiler)
     ksp(libs.hilt.compiler)
- // For collecting flows in lifecycle-aware components (like ViewModel)
+    // For collecting flows in lifecycle-aware components (like ViewModel)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     // Compose Runtime (usually already included)
     implementation(libs.androidx.runtime)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
-    implementation (libs.hilt.android)
+    implementation(libs.hilt.android)
     implementation(libs.okhttp)
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.paging.runtime)
     implementation(libs.androidx.lifecycle.viewmodel.savedstate)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.runtime.compose)
-    implementation (libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.paging.runtime)
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.navigation.compose)
@@ -105,13 +111,10 @@ dependencies {
 // latest version at time of writing
     implementation(libs.androidx.datastore.preference)
 
-        // Unit test
+    // Unit test
 
-        testImplementation (libs.mockito.core)
-        androidTestImplementation (libs.mockito.android)
-        testImplementation(libs.mockwebserver)
-        testImplementation(libs.kotlinx.coroutines.test)
-    
-
-
+    testImplementation(libs.mockito.core)
+    androidTestImplementation(libs.mockito.android)
+    testImplementation(libs.mockwebserver)
+    testImplementation(libs.kotlinx.coroutines.test)
 }

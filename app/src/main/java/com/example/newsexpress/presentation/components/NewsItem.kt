@@ -1,6 +1,5 @@
 package com.example.newsexpress.presentation.components
 
-
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,28 +28,37 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.newsexpress.newsapidata.Article
 
-
 @Composable
-fun NewsItem(itemList:List<Article>){
+fun NewsItem(itemList: List<Article>) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(itemList){
-            Box(modifier= Modifier.fillMaxWidth().padding(8.dp)){
-                Row(modifier = Modifier.fillMaxWidth()){
-                    AsyncImage(model=it.urlToImage, contentDescription = "Image from url",
-                        modifier = Modifier.size(100.dp).clip(RoundedCornerShape(8.dp)), contentScale = ContentScale.Crop)
-                      Spacer(modifier = Modifier.fillMaxWidth().fillMaxHeight(0.2f))
-                      Column(modifier = Modifier.fillMaxWidth().align(Alignment.CenterVertically)
-                          ,verticalArrangement = Arrangement.spacedBy(4.dp)
-                         )
-                       {
-                          Text(text = it.title, fontSize = 16.sp, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis)
-                          Text(text = it.description,
-                              fontSize = 14.sp,
-                              maxLines = 3,
-                              overflow = TextOverflow.Ellipsis
-                          )
-                       }
-
+        items(itemList) {
+            Box(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    AsyncImage(
+                        model = it.urlToImage,
+                        contentDescription = "Image from url",
+                        modifier = Modifier.size(100.dp).clip(RoundedCornerShape(8.dp)),
+                        contentScale = ContentScale.Crop,
+                    )
+                    Spacer(modifier = Modifier.fillMaxWidth().fillMaxHeight(0.2f))
+                    Column(
+                        modifier = Modifier.fillMaxWidth().align(Alignment.CenterVertically),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        Text(
+                            text = it.title,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                        Text(
+                            text = it.description,
+                            fontSize = 14.sp,
+                            maxLines = 3,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
                 }
             }
             HorizontalDivider(modifier = Modifier.fillMaxWidth(), DividerDefaults.Thickness, DividerDefaults.color)

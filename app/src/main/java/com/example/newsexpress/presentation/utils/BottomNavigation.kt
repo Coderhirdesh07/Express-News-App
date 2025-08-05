@@ -16,7 +16,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHost
@@ -30,62 +29,64 @@ import com.example.newsexpress.presentation.screens.SearchScreen
 import com.example.newsexpress.viewmodel.NewsViewModel
 
 @Composable
-fun BottomNavigation(viewModel: NewsViewModel){
+fun BottomNavigation(viewModel: NewsViewModel) {
     val navigationController = rememberNavController()
     val context = LocalContext.current.applicationContext
-    val selectedScreen = remember(){
-        mutableStateOf(Icons.Default.Home)
-    }
+    val selectedScreen =
+        remember {
+            mutableStateOf(Icons.Default.Home)
+        }
     Scaffold(
         bottomBar = {
-            BottomAppBar(containerColor = Color.Green){
+            BottomAppBar(containerColor = Color.Green) {
                 IconButton(onClick = {
                     selectedScreen.value = Icons.Default.Home
-                    navigationController.navigate(Screens.HomeScreen){ popUpTo(0) }
-                }, modifier = Modifier.weight(1f)){
+                    navigationController.navigate(Screens.HomeScreen) { popUpTo(0) }
+                }, modifier = Modifier.weight(1f)) {
                     Icon(Icons.Default.Home, contentDescription = "Home Icons", modifier = Modifier.size(26.dp))
                 }
 
                 IconButton(onClick = {
                     selectedScreen.value = Icons.Default.Search
-                    navigationController.navigate(Screens.SearchScreen){ popUpTo(0) }
-                }, modifier = Modifier.weight(1f)){
+                    navigationController.navigate(Screens.SearchScreen) { popUpTo(0) }
+                }, modifier = Modifier.weight(1f)) {
                     Icon(Icons.Default.Search, contentDescription = "Search Icons", modifier = Modifier.size(26.dp))
                 }
 
                 IconButton(onClick = {
                     selectedScreen.value = Icons.Default.Favorite
-                    navigationController.navigate(Screens.SavedArticleScreen){ popUpTo(0) }
-                }, modifier = Modifier.weight(1f)){
+                    navigationController.navigate(Screens.SavedArticleScreen) { popUpTo(0) }
+                }, modifier = Modifier.weight(1f)) {
                     Icon(Icons.Default.Favorite, contentDescription = "Saved Icons", modifier = Modifier.size(26.dp))
                 }
 
                 IconButton(onClick = {
                     selectedScreen.value = Icons.Default.Person
-                    navigationController.navigate(Screens.SavedArticleScreen){ popUpTo(0) }
-                }, modifier = Modifier.weight(1f)){
+                    navigationController.navigate(Screens.SavedArticleScreen) { popUpTo(0) }
+                }, modifier = Modifier.weight(1f)) {
                     Icon(Icons.Default.Person, contentDescription = "Profile Icons", modifier = Modifier.size(26.dp))
                 }
-
-
             }
-        }
-    )
-    { paddingValues ->
+        },
+    ) { paddingValues ->
 
-        NavHost(navController = navigationController, startDestination = Screens.HomeScreen, modifier = Modifier.padding(paddingValues)){
-            composable(Screens.HomeScreen.screen){ HomeScreen(viewModel) }
-            composable(Screens.SearchScreen.screen){ SearchScreen(viewModel) }
-            composable(Screens.SavedArticleScreen.screen){ SavedArticleScreen(viewModel) }
-            composable ( Screens.ProfileScreen.screen ){ ProfileScreen(context) }
+        NavHost(navController = navigationController, startDestination = Screens.HomeScreen, modifier = Modifier.padding(paddingValues)) {
+            composable(Screens.HomeScreen.screen) { HomeScreen(viewModel) }
+            composable(Screens.SearchScreen.screen) { SearchScreen(viewModel) }
+            composable(Screens.SavedArticleScreen.screen) { SavedArticleScreen(viewModel) }
+            composable(Screens.ProfileScreen.screen) { ProfileScreen(viewModel) }
         }
     }
-
 }
-sealed class Screens(val screen:String){
-    data object HomeScreen: Screens("home")
-    data object SavedArticleScreen: Screens("saved")
-    data object SearchScreen:Screens("search")
 
-    data object ProfileScreen:Screens("profile")
+sealed class Screens(
+    val screen: String,
+) {
+    data object HomeScreen : Screens("home")
+
+    data object SavedArticleScreen : Screens("saved")
+
+    data object SearchScreen : Screens("search")
+
+    data object ProfileScreen : Screens("profile")
 }

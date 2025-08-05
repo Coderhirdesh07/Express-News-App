@@ -13,91 +13,114 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
-class NewsViewModel @Inject constructor(val newsApiRepository: NewsApiRepository) : ViewModel(){
-    // state handles code
-    private var _newsData = MutableStateFlow<NewsApiData?>(null)
-    var newsData: StateFlow<NewsApiData?> = _newsData.asStateFlow()
+class NewsViewModel
+    @Inject
+    constructor(
+        val newsApiRepository: NewsApiRepository,
+    ) : ViewModel() {
+        // state handles code
 
-    private val _error = MutableStateFlow<String?>(null)
-    val error: StateFlow<String?> = _error.asStateFlow()
-    val country:String="us"
+        var region: String = "us"
+        var language: String = "en"
 
+        private var _newsData = MutableStateFlow<NewsApiData?>(null)
+        var newsData: StateFlow<NewsApiData?> = _newsData.asStateFlow()
 
-    init{
-       getNewsHeadlines(country)
-    }
+        private val _error = MutableStateFlow<String?>(null)
+        val error: StateFlow<String?> = _error.asStateFlow()
 
-    fun getNewsArticleFromNetwork(query:String,language:String){
-        viewModelScope.launch {
-            newsApiRepository.getNewsArticle(query,language)
-                .catch {e->
-                    _error.value = e.message?:"Unknown Error"
-                }.collect { news ->
-                    _newsData.value = news.data
-                }
+        init {
+            viewModelScope.launch {
+                getDataStoreInfo()
+                getNewsHeadlines(region)
+            }
         }
 
-    }
-
-    fun getNewsHeadlines(country:String){
-        viewModelScope.launch{
-            newsApiRepository.getNewsTopHeadLines(country)
-                .catch { e->
-                    _error.value = e.message?:"Unknown Error"
-                }.collect { news->
-                    _newsData.value = news.data
-                }
+        suspend fun saveDataStoreInfoRegion(value: String) {
+            newsApiRepository.saveRegion(value)
         }
 
-    }
-
-    fun getNewsArticleWithCategory(category:String,language: String){
-        viewModelScope.launch {
-            newsApiRepository.getNewsArticleCategory(category, language)
-                .catch { e->
-                    _error.value = e.message?:"Data Not Fetched"
-                }
-                .collect { news->
-                    _newsData.value = news.data
-                }
-        }
-    }
-
-
-    // for database
-
-    private var _localNewsList  = MutableStateFlow<List<ArticleDTO?>?>(emptyList())
-    var localNewsList: StateFlow<List<ArticleDTO?>?> = _localNewsList.asStateFlow()
-
-
-    private val _databaseError = MutableStateFlow<String?>(null)
-    val databaseError: StateFlow<String?> = _databaseError.asStateFlow()
-
-    fun getSavedNewsArticle(){
-        viewModelScope.launch {
-            newsApiRepository.getSavedNewsArticle()
-                .catch {e->
-                    _databaseError.value = e.message?:"Database Error"
-                }.collect { news->
-                    _localNewsList.value = news.data
-                }
+        suspend fun saveDataStoreInfoLanguage(value: String) {
+            newsApiRepository.saveLanguage(value)
         }
 
-    }
-
-    fun insertNewsArticle(articleDTO: ArticleDTO){
-        viewModelScope.launch {
-            newsApiRepository.deleteNewsArticle(articleDTO)
+        suspend fun getDataStoreInfo() {
+            region = newsApiRepository.getRegion() ?: region
+            language = newsApiRepository.getLanguage() ?: language
         }
 
-    }
-    fun deleteNewsArticle(articleDTO: ArticleDTO){
-        viewModelScope.launch {
-            newsApiRepository.deleteNewsArticle(articleDTO)
+        fun getNewsArticleFromNetwork(
+            query: String,
+            language: String,
+        ) {
+            viewModelScope.launch {
+                newsApiRepository
+                    .getNewsArticle(query, language)
+                    .catch { e ->
+                        _error.value = e.message ?: "Unknown Error"
+                    }.collect { news ->
+                        _newsData.value = news.data
+                    }
+            }
         }
 
-    }
+        fun getNewsHeadlines(region: String) {
+            viewModelScope.launch {
+                newsApiRepository
+                    .getNewsTopHeadLines(region)
+                    .catch { e ->
+                        _error.value = e.message ?: "Unknown Error"
+                    }.collect { news ->
+                        _newsData.value = news.data
+                    }
+            }
+        }
 
-}
+        fun getNewsArticleWithCategory(
+            category: String,
+            language: String,
+        ) {
+            viewModelScope.launch {
+                newsApiRepository
+                    .getNewsArticleCategory(category, language)
+                    .catch { e ->
+                        _error.value = e.message ?: "Data Not Fetched"
+                    }.collect { news ->
+                        _newsData.value = news.data
+                    }
+            }
+        }
+
+        // for database
+
+        private var _localNewsList = MutableStateFlow<List<ArticleDTO?>?>(emptyList())
+        var localNewsList: StateFlow<List<ArticleDTO?>?> = _localNewsList.asStateFlow()
+
+        private val _databaseError = MutableStateFlow<String?>(null)
+        val databaseError: StateFlow<String?> = _databaseError.asStateFlow()
+
+        fun getSavedNewsArticle() {
+            viewModelScope.launch {
+                newsApiRepository
+                    .getSavedNewsArticle()
+                    .catch { e ->
+                        _databaseError.value = e.message ?: "Database Error"
+                    }.collect { news ->
+                        _localNewsList.value = news.data
+                    }
+            }
+        }
+
+        fun insertNewsArticle(articleDTO: ArticleDTO) {
+            viewModelScope.launch {
+                newsApiRepository.deleteNewsArticle(articleDTO)
+            }
+        }
+
+        fun deleteNewsArticle(articleDTO: ArticleDTO) {
+            viewModelScope.launch {
+                newsApiRepository.deleteNewsArticle(articleDTO)
+            }
+        }
+    }

@@ -6,11 +6,11 @@ import com.example.newsexpress.presentation.utils.BottomNavigation
 import com.example.newsexpress.viewmodel.NewsViewModel
 
 @Composable
-fun HomePage(viewModel: NewsViewModel = hiltViewModel()){
+fun HomePage(viewModel: NewsViewModel = hiltViewModel()) {
     HomePageItem(viewModel)
 }
 
 @Composable
-fun HomePageItem(viewModel: NewsViewModel){
+fun HomePageItem(viewModel: NewsViewModel) {
     BottomNavigation(viewModel)
 }

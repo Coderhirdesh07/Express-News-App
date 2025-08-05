@@ -1,26 +1,33 @@
 package com.example.newsexpress.datastore
 
-import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class PreferenceUtils(val context: Context) {
-    companion object {
-        private val Context.datastore by preferencesDataStore("Local")
-    }
-    suspend fun saveString(key:String,value:String){
-            context.datastore.edit {
-                it[stringPreferencesKey(key)] = value
+class PreferenceUtils
+    @Inject
+    constructor(
+        val dataStore: DataStore<Preferences>,
+    ) {
+        suspend fun saveString(
+            key: String,
+            value: String,
+        ) {
+            val prefKey = stringPreferencesKey(key)
+            dataStore.edit { it ->
+                it[prefKey] = value
             }
-    }
+        }
 
-    suspend fun getString(key:String):String? {
-        return context.datastore.data.map{
-            it[stringPreferencesKey(key)]
-        }.firstOrNull()
+        suspend fun getString(key: String): String? {
+            val prefKey = stringPreferencesKey(key)
+            return dataStore.data
+                .map { it ->
+                    it[prefKey]
+                }.firstOrNull()
+        }
     }
-}

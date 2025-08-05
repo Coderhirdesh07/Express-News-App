@@ -29,39 +29,35 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 
-
 @OptIn(FlowPreview::class)
 @Composable
-fun SearchScreen(newsViewModel: NewsViewModel){
+fun SearchScreen(newsViewModel: NewsViewModel) {
     Text("Search Screen")
     val newsData by newsViewModel.newsData.collectAsState()
     val error by newsViewModel.error.collectAsState()
     var query by remember { mutableStateOf("") }
 
-    LaunchedEffect(query){
+    LaunchedEffect(query) {
         snapshotFlow { query }
-            .debounce(500 )
+            .debounce(500)
             .filter { it.isNotBlank() }
             .distinctUntilChanged()
-            .collectLatest { newsViewModel.getNewsArticleFromNetwork(it) }
+            .collectLatest { newsViewModel.getNewsArticleFromNetwork(it, language = "en") }
     }
 
-    Column(modifier = Modifier.fillMaxSize()){
+    Column(modifier = Modifier.fillMaxSize()) {
         OutlinedTextField(
             value = query,
-            onValueChange = {query = it },
-            label = {Text("Search News")},
-            leadingIcon = {Icon(Icons.Default.Search, contentDescription = "Search Icon")},
+            onValueChange = { query = it },
+            label = { Text("Search News") },
+            leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search Icon") },
             modifier = Modifier.fillMaxWidth().padding(8.dp),
-            singleLine = true
+            singleLine = true,
         )
-        if(error!=null){
-            Text(text = error?:"Error Message", color = Color.Red, modifier = Modifier.padding(8.dp))
+        if (error != null) {
+            Text(text = error ?: "Error Message", color = Color.Red, modifier = Modifier.padding(8.dp))
         }
-        val articles:List<Article> = newsData?.article.orEmpty()
+        val articles: List<Article> = newsData?.article.orEmpty()
         NewsItem(itemList = articles)
-
     }
-
 }
-
